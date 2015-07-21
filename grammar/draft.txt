@@ -1,0 +1,199 @@
+LEXICAL STRUCTURE
+
+//es6との整合性のためes4と少し定義を変える(互換性有)
+ReservedIdentifier [one of]
+   Keyword
+   FutureReservedWord
+   NullLiteral
+
+[see ECMA-262 section 11.6  Names and Keywords]
+
+Keyword
+  "type"   "use"
+
+//XXX: function が必要かも
+FutureReservedWord
+//  "function"
+
+//TODO es6に合わせて処理できるようにする
+ContextuallyReservedIdentifier [one of]
+  "standard"   "strict"
+
+[see ECMA-262 section 11.6  Names and Keywords]
+
+//XXX schemaに使う分だけでいいはず
+Punctuator [one of]
+     …   !   *   =
+     |    :   (   )   [   ]   {   }   ,   ;   ? 
+
+VirtualSemicolon
+  [see ECMA-262 section 11.9  Automatic Semicolon Insertion]
+
+Identifier
+  [see ECMA-262 section 11.6  Names and Keywords]
+
+
+StringLiteral
+  [see ECMA-262 section 11.8  Literals]
+
+NullLiteral
+  "null"
+
+AnyLiteral
+  "*"
+
+PROGRAM STRUCTURE
+
+Identifier
+  Identifier [LEXICAL STRUCTURE]
+  ContextuallyReservedIdentifier [LEXICAL STRUCTURE]
+
+NameExpression
+  Identifier
+
+//TODO namespaceの定義を許すか?
+
+// StringLiteralだけにした
+FieldName
+  StringLiteral
+
+
+//TODO like operatorを使えたらいいがlike operatorはPatternにしか出てこない
+
+TYPE EXPRESSIONS
+
+TypeExpression
+  BasicTypeExpression
+  BasicTypeExpression  "?"
+  BasicTypeExpression  "!"
+
+BasicTypeExpression
+//es6との整合性のため少し変更(互換性有)
+  AnyLiteral
+  NullLiteral
+  TypeName
+  UnionType
+  RecordType
+  ArrayType
+
+//TODO 将来的にFunctionTypeをサポートするかもしれないが、
+//FIXME サポートするときにはes4のCallableとFunctionの違いをどうするか？
+
+TypeName
+  NameExpression
+
+UnionType
+  "("  TypeUnionList  ")"
+
+TypeUnionList
+  «empty»
+  NonemptyTypeUnionList
+
+NonemptyTypeUnionList
+  TypeExpression
+  TypeExpression  "|"  NonemptyTypeUnionList
+
+RecordType
+  "{"  FieldTypeList  "}"
+
+FieldTypeList
+  «empty»
+  FieldType
+  FieldType  ","  FieldTypeList
+
+FieldType
+  FieldName  ":"  TypeExpression
+
+ArrayType
+  "["  ElementTypeList  "]"
+
+// [string, ...string]の表現を許すが[,string]の表現を許さないように変更した
+// es4からは  [,,,]  となるような文法を廃止
+ElementTypeList
+  «empty»
+  VariableLengthElementTypeList
+  FixedLengthElementTypeList
+
+// 末尾カンマを許す
+VariableLengthElementTypeList
+  "…"  TypeExpression
+  "…"  TypeExpression  ","
+  TypeExpression  ","  VariableLengthElementTypeList
+
+// 末尾カンマを許す
+FixedLengthElementTypeList
+  TypeExpression
+  TypeExpression  ","
+  TypeExpression  ","  FixedLengthElementTypeList
+
+//XXX: この件は現在POCでhoistable版と非hoistable版を実装したので利用してどちらが相応しいか確かめる必要がある
+//TODO es4 specだとtype operatorはhoistableではないがどうする？
+//     es4 RIでは非hoistableな宣言が所々問題を起こして、
+//     いくつかのケースでバグ扱いされている。
+//     (let functionのbindingがblock objectでtype operatorのbindingが
+//     variable objectといった関係も影響あるが……)
+//     RIではちょっとしたhackで回避している。
+//     @SEE string_primitive.es at 534 etc...
+//
+//     ES4ではTG1によるtype operatorに関するvariable object周りの作業待ちだった模様
+TypeDefinition
+  "type"  Identifier    TypeInitialisation
+
+TypeInitialisation
+  "="  TypeExpression
+
+
+PROGRAMS
+
+Program
+//今後必要になったらプラグマをディレクティブにしてプログラム中どこでも出現できる様にする
+  Pragmas  Directives
+
+PRAGMAS
+
+Pragmas
+  «empty»
+  PragmasPrefix  Pragma
+
+PragmasPrefix
+  «empty»
+  PragmasPrefix  Pragma
+
+Pragma
+  UsePragma  Semicolon
+
+UsePragma
+  "use"  PragmaItems
+
+PragmaItems
+  PragmaItem
+  PragmaItems  ","  PragmaItem
+
+PragmaItem
+  "standard" [ContextuallyReservedIdentifier]
+  "strict"   [ContextuallyReservedIdentifier]
+//TODO Identifierを利用できるようにして任意のプラグマが使えるようにしてはどうか？
+//  Identifier
+
+DIRECTIVES
+
+Directives
+  «empty»
+  DirectivesPrefix   Directive
+
+DirectivesPrefix
+  «empty»
+  DirectivesPrefix   Directive
+
+Directive
+//TODO プラグマをディレクティブにしてプログラム中どこでも出現できる場合
+//  Pragma
+  AttributedDirective
+
+AttributedDirective
+
+  TypeDefinition  Semicolon
+
+Semicolon
+  ";"
+  VirtualSemicolon
