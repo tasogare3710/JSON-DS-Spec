@@ -1,6 +1,6 @@
 **TODO** 表記ブレを修正する
 
-# JSON-DS Language Types
+# JSON Datatype Schema Language Types
 
 JSON-DSで定義されプロセッサの環境から利用可能でなければならないJSON-DSデータ型を定義する。++また、プロセッサはここで定義される以外の独自の型を定義しても良い。++
 
@@ -39,9 +39,9 @@ JSON-DSはes4に着想を得て設計されていますが、プリミティブ�
 
 ## Meta-objects
 
-JSON-DSの型システムには型に対する型があり、それをmeta-objectsと呼ぶ。JSON-DSプロセッサの環境に定義された各型を表す識別子（その一部はキーワードかも知れません）は何らかのmeta-objectのインスタンスとなる。
+JSON-DSの型システムには型に対する型があり、それをmeta-objectsと呼ぶ。JSON-DSプロセッサの環境に定義された各型を表す識別子（その一部はキーワードかも知れない）は何らかのmeta-objectのインスタンスとなる。
 
-以下の通り各JSON valuesは型に属し、型はmeta-objectsとして扱われる。
+以下の通り各JSON valuesは型に属し、型はそれぞれのmeta-objectsとして扱われる。
 
 1. 各JSON valuesはある型のインスタンスであり、
 2. 型は何れかのmeta-objectsのインスタンスである。
@@ -108,7 +108,7 @@ type Box = {
 
 - - - -
 
-## nominal-types
+## Nominal-types
 
 string型、number型、boolean型に対応するStringType、NumberType、BooleanTypeの各種meta-objectsはNominalTypeの部分型である。NominalTypeに属するmeta-objectはプリミティブ値の型を表す。
 
@@ -155,7 +155,7 @@ type Point = {
 
 See EcmaScript 2015 6.1.6 - The Number Type.
 
-### machine-types
+### Machine-types
 
 Machine-typesは他のプログラミング言語との親和性のために追加されるオプションの型とそのmeta-objectsである。これらのmeta-objectsのすべてはNominalTypeの部分型として定義されなければ**ならない。**
 
@@ -199,7 +199,7 @@ Machine-typesのサポートは必須**ではない。**
 
 ##### decimal型
 
-128bit精度の浮動小数点数を表す型とそのmeta-object。++IEEE 754-2008で定義される丸めモードhalf even、34 桁のDecimal128 形式であることが望ましいが**そうでなくてもよい。* ***++
+128bit精度の浮動小数点数を表す型とそのmeta-object。++IEEE 754-2008で定義される丸めモードhalf even、34 桁のDecimal128 形式であることが望ましいがそうで**なくてもよい。**++
 
 #### AnyNumberType object
 
@@ -218,6 +218,10 @@ type AnyNumber = (byte | int | unit | double | decimal | number);
 ```
 type FloatNumber = (double | decimal);
 ```
+
+- - -
+
+以下はWebAssemblyとの親和性のために用意されたmachine-typesである。
 
 ### Int8Type object
 #### int8型
