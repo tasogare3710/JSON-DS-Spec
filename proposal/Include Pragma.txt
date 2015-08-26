@@ -1,0 +1,37 @@
+# Grammar
+
+Pragma
+  UsePragma  Semicolon
+  IncludePragma  Semicolon
+
+UsePragma
+  "use"  UsePragmaItems
+
+UsePragmaItems
+  UsePragmaItem
+  UsePragmaItems  ","  UsePragmaItem
+
+UsePragmaItem
+  "standard" [ContextuallyReservedIdentifier]
+  "strict"   [ContextuallyReservedIdentifier]
+//TODO Identifierを利用できるようにして任意のプラグマが使えるようにしてはどうか？
+//  Identifier
+
+IncludePragma
+  "include"  IncludePragmaItems
+
+IncludePragmaItems
+  IncludePragmaItem
+  IncludePragmaItems  ","  IncludePragmaItem
+
+IncludePragmaItem
+  StringLiteral
+
+# Examples
+
+```
+use standard;
+include "../datatypes/Person.js";
+
+type Family = [...Person];
+```
