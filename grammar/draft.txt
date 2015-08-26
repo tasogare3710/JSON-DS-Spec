@@ -1,15 +1,13 @@
 LEXICAL STRUCTURE
 
-//es6との整合性のためes4と少し定義を変える(互換性有)
 ReservedIdentifier [one of]
    Keyword
    FutureReservedWord
-   NullLiteral
 
 [see ECMA-262 section 11.6  Names and Keywords]
 
 Keyword
-  "type"   "use"
+  "type"   "use"  "null"
 
 //XXX: function が必要かも
 FutureReservedWord
@@ -35,12 +33,6 @@ Identifier
 
 StringLiteral
   [see ECMA-262 section 11.8  Literals]
-
-NullLiteral
-  "null"
-
-AnyLiteral
-  "*"
 
 PROGRAM STRUCTURE
 
@@ -69,8 +61,8 @@ TypeExpression
 
 BasicTypeExpression
 //es6との整合性のため少し変更(互換性有)
-  AnyLiteral
-  NullLiteral
+  "*"
+  "null"
   TypeName
   UnionType
   RecordType
