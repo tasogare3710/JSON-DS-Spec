@@ -1,4 +1,6 @@
-# Grammar
+# Include pragma rev.2
+
+## Grammar
 
 Pragma
   UsePragma  Semicolon
@@ -18,16 +20,12 @@ UsePragmaItem
 //  Identifier
 
 IncludePragma
-  "include"  IncludePragmaItems
-
-IncludePragmaItems
-  IncludePragmaItem
-  IncludePragmaItems  ","  IncludePragmaItem
+  "include"  IncludePragmaItem
 
 IncludePragmaItem
   StringLiteral
 
-# Examples
+## Examples
 
 ```
 use standard;
