@@ -347,6 +347,8 @@ type AnyBadNullable = *!;
 ### A. examples
 
 ```
+// Person.jsds
+use standard;
 type Person = {
 	"first": string,
     "last":  string,
@@ -355,5 +357,11 @@ type Person = {
     //"age": uint,
 };
 
-type JSON = Person!;
+// Family.jsds
+use standard;
+include "../datatypes/Person.jsds";
+
+type Family = [...Person];
+
+type JSON = Family!;
 ```

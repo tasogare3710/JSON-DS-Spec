@@ -1,4 +1,4 @@
-# JSON-DS-Spec ~draft5~
+# JSON-DS-Spec ~draft6~
 
 JSON Datatype Schema Language（JSON-DS）はJSONのための型に基づくスキーマです。
 

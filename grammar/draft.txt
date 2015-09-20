@@ -153,19 +153,26 @@ PragmasPrefix
 
 Pragma
   UsePragma  Semicolon
+  IncludePragma  Semicolon
 
 UsePragma
-  "use"  PragmaItems
+// Static Semantics: Early Errorsとして扱えるように変更
+  "use"  "standard" [ContextuallyReservedIdentifier]
+  "use"  "strict"   [ContextuallyReservedIdentifier]
+  "use"  UsePragmaItems
 
-PragmaItems
-  PragmaItem
-  PragmaItems  ","  PragmaItem
+UsePragmaItems
+  UsePragmaItem
+  UsePragmaItems  ","  UsePragmaItem
 
-PragmaItem
-  "standard" [ContextuallyReservedIdentifier]
-  "strict"   [ContextuallyReservedIdentifier]
-//TODO Identifierを利用できるようにして任意のプラグマが使えるようにしてはどうか？
-//  Identifier
+UsePragmaItem
+  Identifier
+
+IncludePragma
+  "include"  IncludePragmaItem
+
+IncludePragmaItem
+  StringLiteral
 
 DIRECTIVES
 
